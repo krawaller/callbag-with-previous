@@ -1,0 +1,21 @@
+{
+  "name": "callbag-with-previous",
+  "version": "1.0.0",
+  "description": "Callbag operator that puts the previous value alongside the current",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krawaller/callbag-with-previous.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "author": "David Waller",
+  "license": "MIT",
+  "keywords": [
+    "callbag"
+  ],
+  "devDependencies": {
+    "tape": "^4.8.0"
+  }
+}
