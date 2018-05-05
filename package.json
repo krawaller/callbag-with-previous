@@ -1,6 +1,6 @@
 {
   "name": "callbag-with-previous",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Callbag operator that puts the previous value alongside the current",
   "repository": {
     "type": "git",
@@ -16,7 +16,7 @@
     "callbag"
   ],
   "devDependencies": {
-    "callbag-mock": "^1.0.0",
+    "callbag-mock": "^2.2.0",
     "tape": "^4.8.0"
   }
 }

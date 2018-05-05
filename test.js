@@ -3,45 +3,36 @@ const makeMockCallbag = require('callbag-mock');
 const withPrevious = require('./index');
 
 test('it puts previous data alongside the current', t => {
-  let history = [];
-  const report = (name,dir,t,d) => t !== 0 && history.push([name,dir,t,d]);
-
-  const source = makeMockCallbag('source', true);
-  const sink = makeMockCallbag('sink', report);
+  const source = makeMockCallbag(true);
+  const sink = makeMockCallbag();
 
   withPrevious(source)(0, sink);
 
   source.emit(1, 'foo');
   source.emit(1, 'bar');
   source.emit(1, 'baz');
+
+  t.deepEqual(
+    sink.getReceivedData(),
+    [['foo',undefined,true], ['bar','foo'], ['baz','bar']],
+    'sink gets values with previous values'
+  );
   source.emit(2, 'error');
-
-  t.deepEqual(history, [
-    ['sink', 'body', 1, ['foo', undefined, true]],
-    ['sink', 'body', 1, ['bar', 'foo']],
-    ['sink', 'body', 1, ['baz', 'bar']],
-    ['sink', 'body', 2, 'error'],
-  ], 'sink gets terminations and values are coupled with previous values');
-
+  t.ok(!sink.checkConnection(), 'sink gets terminated as usual');
   t.end();
 });
 
 test('it passes requests back up', t => {
-  let history = [];
-  const report = (name,dir,t,d) => t !== 0 && history.push([name,dir,t,d]);
-
-  const source = makeMockCallbag('source', report, true);
-  const sink = makeMockCallbag('sink', report);
+  const source = makeMockCallbag(true);
+  const sink = makeMockCallbag();
 
   withPrevious(source)(0, sink);
 
   sink.emit(1);
   sink.emit(2);
 
-  t.deepEqual(history, [
-    ['source', 'talkback', 1, undefined],
-    ['source', 'talkback', 2, undefined],
-  ], 'source gets requests from sink');
-
+  const [init, ...messages] = source.getMessages();
+  t.equal(init[0], 0, 'source is initiated');
+  t.deepEqual(messages, [[1,undefined],[2,undefined]], 'source gets all messages');
   t.end();
 });
