@@ -13,4 +13,4 @@ const withPrevious = source => (start, sink) => {
   });
 };
 
-module.exports = withPrevious;
+export default withPrevious;

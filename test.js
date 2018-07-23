@@ -1,6 +1,6 @@
 const test = require('tape');
 const makeMockCallbag = require('callbag-mock');
-const withPrevious = require('./index');
+const withPrevious = require('.');
 
 test('it puts previous data alongside the current', t => {
   const source = makeMockCallbag(true);
